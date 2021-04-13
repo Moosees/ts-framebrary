@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+import { Eventing } from './Eventing';
 
 interface UserProps {
   id?: number;
@@ -6,12 +7,10 @@ interface UserProps {
   age?: number;
 }
 
-type Callback = () => void;
-
 const API_ADDRESS = 'http://localhost:3000';
 
 export class User {
-  private events: { [key: string]: Callback[] } = {};
+  public events: Eventing = new Eventing();
 
   constructor(private data: UserProps) {}
 
@@ -21,19 +20,6 @@ export class User {
 
   set(update: UserProps): void {
     this.data = { ...this.data, ...update };
-  }
-
-  on(eventName: string, callback: Callback): void {
-    const handlers = this.events[eventName] || [];
-    handlers.push(callback);
-    this.events[eventName] = handlers;
-  }
-
-  trigger(eventName: string): void {
-    const handlers = this.events[eventName];
-    if (!handlers || !handlers.length) return;
-
-    handlers.forEach((callback) => callback());
   }
 
   fetch(): void {
