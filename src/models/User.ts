@@ -1,3 +1,4 @@
+import { Attributes } from './Attributes';
 import { Eventing } from './Eventing';
 import { Sync } from './Sync';
 
@@ -8,16 +9,11 @@ export interface UserProps {
 }
 
 export class User {
+  public attributes: Attributes<UserProps>;
   public events: Eventing = new Eventing();
   public sync: Sync<UserProps> = new Sync<UserProps>('/users');
 
-  constructor(private data: UserProps) {}
-
-  get(propName: string): string | number {
-    return this.data[propName];
-  }
-
-  set(update: UserProps): void {
-    this.data = { ...this.data, ...update };
+  constructor(attrs: UserProps) {
+    this.attributes = new Attributes<UserProps>(attrs);
   }
 }
