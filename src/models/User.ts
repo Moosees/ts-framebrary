@@ -9,7 +9,7 @@ export interface UserProps {
 
 export class User {
   public events: Eventing = new Eventing();
-  public sync: Sync = new Sync('/users');
+  public sync: Sync<UserProps> = new Sync<UserProps>('/users');
 
   constructor(private data: UserProps) {}
 
