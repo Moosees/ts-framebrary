@@ -1,5 +1,5 @@
 import { User } from './models/User';
 
 const user = new User({ name: 'Test' });
-console.log(user.attributes.get('name'));
-console.log(user.attributes.get('age'));
+user.on('change', () => console.log('Something changed'));
+user.set({ name: 'Test2' });
