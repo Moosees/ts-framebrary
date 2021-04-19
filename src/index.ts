@@ -1,12 +1,8 @@
-import { Collection } from './models/Collection';
-import { User, UserProps } from './models/User';
+import { User } from './models/User';
 
 export const API_ADDRESS = 'http://localhost:3000';
 
-const userCollection = new Collection<User, UserProps>(
-  '/users',
-  (userProps: UserProps) => User.buildUser(userProps)
-);
+const userCollection = User.buildUserCollection();
 userCollection.on('change', () => {
   console.log(userCollection);
 });

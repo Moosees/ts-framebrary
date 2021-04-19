@@ -1,4 +1,5 @@
 import { Attributes } from './Attributes';
+import { Collection } from './Collection';
 import { Eventing } from './Eventing';
 import { Model } from './Model';
 import { ServerSync } from './ServerSync';
@@ -16,5 +17,9 @@ export class User extends Model<UserProps> {
       new ServerSync<UserProps>('/users'),
       new Eventing()
     );
+  }
+
+  static buildUserCollection(): Collection<User, UserProps> {
+    return new Collection<User, UserProps>('/users', this.buildUser);
   }
 }
