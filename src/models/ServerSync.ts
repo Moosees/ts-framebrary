@@ -1,7 +1,6 @@
 import axios, { AxiosPromise } from 'axios';
+import { API_ADDRESS } from '../index';
 import { CanHaveId } from './Model';
-
-const API_ADDRESS = 'http://localhost:3000';
 
 export class ServerSync<T extends CanHaveId> {
   constructor(private apiRoute: string) {}

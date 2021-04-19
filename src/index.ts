@@ -1,7 +1,9 @@
-import { User } from './models/User';
+import { Collection } from './models/Collection';
 
-const user = User.buildUser({ id: 3 });
-user.on('change', () => {
-  console.log(user);
+export const API_ADDRESS = 'http://localhost:3000';
+
+const collection = new Collection('/users');
+collection.on('change', () => {
+  console.log(collection);
 });
-user.fetch();
+collection.fetch();
