@@ -1,13 +1,12 @@
 import axios, { AxiosResponse } from 'axios';
 import { API_ADDRESS } from '..';
 import { Eventing } from './Eventing';
-import { User, UserProps } from './User';
 
-export class Collection {
-  models: User[] = [];
+export class Collection<T, K> {
+  models: T[] = [];
   events: Eventing = new Eventing();
 
-  constructor(private apiRoute: string) {}
+  constructor(private apiRoute: string, private deserialize: (item: K) => T) {}
 
   get on() {
     return this.events.on;
@@ -19,9 +18,8 @@ export class Collection {
 
   fetch(): void {
     axios.get(`${API_ADDRESS}${this.apiRoute}`).then((res: AxiosResponse) => {
-      res.data.forEach((item: UserProps): void => {
-        const user = User.buildUser(item);
-        this.models.push(user);
+      res.data.forEach((item: K): void => {
+        this.models.push(this.deserialize(item));
       });
       this.trigger('change');
     });
