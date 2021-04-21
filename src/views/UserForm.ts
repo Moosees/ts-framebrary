@@ -1,5 +1,7 @@
+import { User } from '../models/User';
+
 export class UserForm {
-  constructor(private parent: Element) {}
+  constructor(private parent: Element, private user: User) {}
 
   onClick(): void {
     console.log('test');
@@ -10,7 +12,13 @@ export class UserForm {
   }
 
   createTemplate(): string {
-    return `<div><input /><button>GO!</button></div>`;
+    console.log(this.user);
+    return `
+    <div>
+      <div>Hello ${this.user.get('name')}</div>
+      <input />
+      <button>GO!</button>
+    </div>`;
   }
 
   bindEvents(fragment: DocumentFragment): void {
