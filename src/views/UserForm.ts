@@ -1,23 +1,22 @@
 import { User } from '../models/User';
 
 export class UserForm {
-  constructor(private parent: Element, private user: User) {}
-
-  onClick(): void {
-    console.log('test');
+  constructor(private parent: Element, private user: User) {
+    this.user.on('change', () => this.render());
   }
 
   getEvents(): { [key: string]: () => void } {
-    return { 'click:button': this.onClick };
+    return { 'click:.random-age': this.user.setRandomAge };
   }
 
   createTemplate(): string {
-    console.log(this.user);
     return `
     <div>
       <div>Hello ${this.user.get('name')}</div>
+      <div>Age: ${this.user.get('age')}</div>
       <input />
       <button>GO!</button>
+      <button class="random-age">Randomize age</button>
     </div>`;
   }
 
@@ -34,8 +33,11 @@ export class UserForm {
   }
 
   render(): void {
+    this.parent.innerHTML = '';
+
     const template = document.createElement('template');
     template.innerHTML = this.createTemplate();
+
     this.bindEvents(template.content);
 
     this.parent.append(template.content);
