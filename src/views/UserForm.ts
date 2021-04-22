@@ -1,20 +1,21 @@
-import { User } from '../models/User';
+import { User, UserProps } from '../models/User';
+import { View } from './View';
 
-export class UserForm {
-  constructor(private parent: Element, private user: User) {
-    this.user.on('change', () => this.render());
-  }
-
+export class UserForm extends View<User, UserProps> {
   handleNameClick = (): void => {
     const input: HTMLInputElement | null = this.parent.querySelector(
       '.name-input'
     );
-    input && this.user.set({ name: input.value });
+    input && this.model.set({ name: input.value });
+  };
+
+  handleAgeClick = (): void => {
+    this.model.set({ age: Math.floor(Math.random() * 100) });
   };
 
   getEvents(): { [key: string]: () => void } {
     return {
-      'click:.random-age': this.user.setRandomAge,
+      'click:.random-age': this.handleAgeClick,
       'click:.change-name': this.handleNameClick,
     };
   }
@@ -22,34 +23,11 @@ export class UserForm {
   createTemplate(): string {
     return `
     <div>
-      <div>Hello ${this.user.get('name')}</div>
-      <div>Age: ${this.user.get('age')}</div>
+      <div>Hello ${this.model.get('name')}</div>
+      <div>Age: ${this.model.get('age')}</div>
       <input class="name-input" />
       <button class="change-name">Change name</button>
       <button class="random-age">Randomize age</button>
     </div>`;
-  }
-
-  bindEvents(fragment: DocumentFragment): void {
-    const events = this.getEvents();
-
-    for (let key in events) {
-      const [eventName, selector] = key.split(':');
-
-      fragment.querySelectorAll(selector).forEach((element) => {
-        element.addEventListener(eventName, events[key]);
-      });
-    }
-  }
-
-  render(): void {
-    this.parent.innerHTML = '';
-
-    const template = document.createElement('template');
-    template.innerHTML = this.createTemplate();
-
-    this.bindEvents(template.content);
-
-    this.parent.append(template.content);
   }
 }
