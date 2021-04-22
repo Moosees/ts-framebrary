@@ -5,8 +5,16 @@ export class UserForm {
     this.user.on('change', () => this.render());
   }
 
+  handleNameClick = (): void => {
+    const input: HTMLInputElement = this.parent.querySelector('.name-input');
+    this.user.set({ name: input.value });
+  };
+
   getEvents(): { [key: string]: () => void } {
-    return { 'click:.random-age': this.user.setRandomAge };
+    return {
+      'click:.random-age': this.user.setRandomAge,
+      'click:.change-name': this.handleNameClick,
+    };
   }
 
   createTemplate(): string {
@@ -14,8 +22,8 @@ export class UserForm {
     <div>
       <div>Hello ${this.user.get('name')}</div>
       <div>Age: ${this.user.get('age')}</div>
-      <input />
-      <button>GO!</button>
+      <input class="name-input" />
+      <button class="change-name">Change name</button>
       <button class="random-age">Randomize age</button>
     </div>`;
   }
