@@ -6,8 +6,10 @@ export class UserForm {
   }
 
   handleNameClick = (): void => {
-    const input: HTMLInputElement = this.parent.querySelector('.name-input');
-    this.user.set({ name: input.value });
+    const input: HTMLInputElement | null = this.parent.querySelector(
+      '.name-input'
+    );
+    input && this.user.set({ name: input.value });
   };
 
   getEvents(): { [key: string]: () => void } {
