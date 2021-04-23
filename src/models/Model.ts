@@ -51,6 +51,8 @@ export class Model<T extends CanHaveId> {
   }
 
   save(): void {
-    this.sync.save(this.attributes.getAll());
+    this.sync
+      .save(this.attributes.getAll())
+      .then((res: SyncResponse<T>): void => this.set(res.data));
   }
 }

@@ -13,21 +13,25 @@ export class UserForm extends View<User, UserProps> {
     this.model.set({ age: Math.floor(Math.random() * 100) });
   };
 
+  handleSaveClick = (): void => {
+    this.model.save();
+  };
+
   getEvents(): { [key: string]: () => void } {
     return {
       'click:.random-age': this.handleAgeClick,
       'click:.change-name': this.handleNameClick,
+      'click:.save-user': this.handleSaveClick,
     };
   }
 
   createTemplate(): string {
     return `
     <div>
-      <div>Hello ${this.model.get('name')}</div>
-      <div>Age: ${this.model.get('age')}</div>
-      <input class="name-input" />
+      <input class="name-input" placeholder="${this.model.get('name')}"/>
       <button class="change-name">Change name</button>
       <button class="random-age">Randomize age</button>
+      <button class="save-user">Save</button>
     </div>`;
   }
 }
