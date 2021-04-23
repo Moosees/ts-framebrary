@@ -18,4 +18,3 @@ const userEdit = new UserEdit(
   User.buildUser({ name: 'Form Formsson', age: 1234 })
 );
 userEdit.render();
-console.log(userEdit)

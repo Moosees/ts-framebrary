@@ -49,7 +49,8 @@ export abstract class View<T extends Model<K>, K> {
     for (let selector in regions) {
       const createChild = regions[selector];
       fragment.querySelectorAll(selector).forEach((element) => {
-        createChild(element).render();
+        const child = createChild(element);
+        child instanceof View && child.render();
       });
     }
   }

@@ -4,7 +4,7 @@ import { UserInfo } from './UserInfo';
 import { View } from './View';
 
 export class UserEdit extends View<User, UserProps> {
-  createRegionMap(): { [key: string]: (region: Element) => any } {
+  createRegionMap() {
     return {
       '.user-info': (region: Element) => new UserInfo(region, this.model),
       '.user-form': (region: Element) => new UserForm(region, this.model),
