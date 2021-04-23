@@ -17,7 +17,7 @@ export class UserForm extends View<User, UserProps> {
     this.model.save();
   };
 
-  getEvents(): { [key: string]: () => void } {
+  createEventMap(): { [key: string]: () => void } {
     return {
       'click:.random-age': this.handleAgeClick,
       'click:.change-name': this.handleNameClick,

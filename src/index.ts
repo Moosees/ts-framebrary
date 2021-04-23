@@ -1,5 +1,5 @@
 import { User } from './models/User';
-import { UserForm } from './views/UserForm';
+import { UserEdit } from './views/UserEdit';
 
 export const API_ADDRESS = 'http://localhost:3000';
 
@@ -13,8 +13,9 @@ const rootElement = document.getElementById('root');
 
 if (!rootElement) throw new Error('Root element not found');
 
-const userForm = new UserForm(
+const userEdit = new UserEdit(
   rootElement,
   User.buildUser({ name: 'Form Formsson', age: 1234 })
 );
-userForm.render();
+userEdit.render();
+console.log(userEdit)

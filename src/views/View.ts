@@ -5,15 +5,34 @@ export abstract class View<T extends Model<K>, K> {
     this.bindModel();
   }
 
-  abstract getEvents(): { [key: string]: () => void };
   abstract createTemplate(): string;
 
-  bindModel(): void {
+  createEventMap(): { [key: string]: () => void } {
+    return {};
+  }
+
+  createRegionMap(): { [key: string]: (region: Element) => any } {
+    return {};
+  }
+
+  render(): void {
+    this.parent.innerHTML = '';
+
+    const template = document.createElement('template');
+    template.innerHTML = this.createTemplate();
+
+    this.bindEvents(template.content);
+    this.bindRegions(template.content);
+
+    this.parent.append(template.content);
+  }
+
+  private bindModel(): void {
     this.model.on('change', () => this.render());
   }
 
-  bindEvents(fragment: DocumentFragment): void {
-    const events = this.getEvents();
+  private bindEvents(fragment: DocumentFragment): void {
+    const events = this.createEventMap();
 
     for (let key in events) {
       const [eventName, selector] = key.split(':');
@@ -24,14 +43,14 @@ export abstract class View<T extends Model<K>, K> {
     }
   }
 
-  render(): void {
-    this.parent.innerHTML = '';
+  private bindRegions(fragment: DocumentFragment): void {
+    const regions = this.createRegionMap();
 
-    const template = document.createElement('template');
-    template.innerHTML = this.createTemplate();
-
-    this.bindEvents(template.content);
-
-    this.parent.append(template.content);
+    for (let selector in regions) {
+      const createChild = regions[selector];
+      fragment.querySelectorAll(selector).forEach((element) => {
+        createChild(element).render();
+      });
+    }
   }
 }
